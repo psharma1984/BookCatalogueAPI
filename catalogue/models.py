@@ -23,7 +23,7 @@ class Book(models.Model):
     price = models.IntegerField()
     description = models.TextField(max_length=200)
     author = models.ForeignKey(Author, on_delete=models.CASCADE, related_name="books")
-    genre = models.ManyToManyField(Genre, related_name="books")
+    genres = models.ManyToManyField(Genre, related_name="books")
 
     class Meta:
         ordering = ["name"]
