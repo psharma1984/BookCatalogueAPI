@@ -6,16 +6,18 @@ from django.db import models
 class Author(models.Model):
     name = models.CharField(max_length=100)
     age = models.IntegerField()
+    id = models.IntegerField(primary_key=True)
 
     class Meta:
-        ordering = ["name"]
+        ordering = ["id"]
 
 
 class Genre(models.Model):
     name = models.CharField(max_length=20)
+    id = models.IntegerField(primary_key=True)
 
     class Meta:
-        ordering = ["name"]
+        ordering = ["id"]
 
 
 class Book(models.Model):
