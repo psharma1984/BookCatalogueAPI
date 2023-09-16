@@ -2,5 +2,5 @@ from django.urls import path
 from catalogue import views
 
 urlpatterns = [
-    path("catalogue/", views.BookList),
+    path("catalogue/", views.BookList.as_view()),
 ]
