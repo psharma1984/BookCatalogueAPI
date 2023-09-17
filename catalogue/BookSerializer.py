@@ -11,9 +11,16 @@ class BookSerializer(serializers.ModelSerializer):
             book.save()
         return book
 
+    def update(self, instance, validated_data):
+        instance.name = validated_data.get("name", instance.name)
+        instance.price = validated_data.get("price", instance.price)
+        instance.description = validated_data.get("description", instance.description)
+        instance.save()
+        return instance
+
     class Meta:
         model = Book
-        fields = ["name", "price", "description", "author", "genres"]
+        fields = ["name", "price", "description", "author", "genres", "id"]
 
 
 class GenreSerializer(serializers.ModelSerializer):

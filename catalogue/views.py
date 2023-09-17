@@ -8,9 +8,9 @@ from rest_framework import status
 
 
 class BookList(APIView):
-    def get(self, request):
-        books = Book.objects.all()
-        serializer = BookSerializer(books, many=True)
+    def get(self, request, **kwargs):
+        book = Book.objects.get(id=kwargs["pk"])
+        serializer = BookSerializer(book, context={"request": request})
         return Response(serializer.data)
 
     def post(self, request):
@@ -21,11 +21,20 @@ class BookList(APIView):
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+    def put(self, request, **kwargs):
+        book = Book.objects.get(id=kwargs["pk"])
+        serializer = BookSerializer(book, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 
 class AuthorList(APIView):
-    def get(self, request):
-        authors = Author.objects.all()
-        serializer = AuthorSerializer(authors, many=True)
+    def get(self, request, **kwargs):
+        author = Author.objects.get(id=kwargs["pk"])
+        serializer = AuthorSerializer(author, context={"request": request})
         return Response(serializer.data)
 
     def post(self, request):
@@ -38,9 +47,9 @@ class AuthorList(APIView):
 
 
 class GenreList(APIView):
-    def get(self, request):
-        genres = Genre.objects.all()
-        serializer = GenreSerializer(genres, many=True)
+    def get(self, request, **kwargs):
+        genre = Genre.objects.get(id=kwargs["pk"])
+        serializer = GenreSerializer(genre, context={"request": request})
         return Response(serializer.data)
 
     def post(self, request):
