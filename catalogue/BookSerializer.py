@@ -3,6 +3,13 @@ from catalogue.models import Book, Genre, Author
 
 
 class BookSerializer(serializers.ModelSerializer):
+    author = serializers.StringRelatedField()
+    genres = serializers.StringRelatedField(many=True)
+
+    class Meta:
+        model = Book
+        fields = ["name", "price", "description", "author", "genres", "id"]
+
     def create(self, validated_data):
         genres_data = validated_data.pop("genres", None)
         book = Book.objects.create(**validated_data)
@@ -17,10 +24,6 @@ class BookSerializer(serializers.ModelSerializer):
         instance.description = validated_data.get("description", instance.description)
         instance.save()
         return instance
-
-    class Meta:
-        model = Book
-        fields = ["name", "price", "description", "author", "genres", "id"]
 
 
 class GenreSerializer(serializers.ModelSerializer):
