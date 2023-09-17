@@ -30,6 +30,11 @@ class BookList(APIView):
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+    def delete(self, request, **kwargs):
+        book = Book.objects.get(id=kwargs["pk"])
+        book.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
 
 class AuthorList(APIView):
     def get(self, request, **kwargs):
@@ -54,6 +59,11 @@ class AuthorList(APIView):
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+    def delete(self, request, **kwargs):
+        author = Author.objects.get(id=kwargs["pk"])
+        author.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
 
 class GenreList(APIView):
     def get(self, request, **kwargs):
@@ -77,3 +87,8 @@ class GenreList(APIView):
             return Response(serializer.data, status=status.HTTP_200_OK)
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def delete(self, request, **kwargs):
+        genre = Genre.objects.get(id=kwargs["pk"])
+        genre.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
