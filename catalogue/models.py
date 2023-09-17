@@ -6,7 +6,7 @@ from django.db import models
 class Author(models.Model):
     name = models.CharField(max_length=100)
     age = models.IntegerField()
-    id = models.IntegerField(primary_key=True)
+    id = models.AutoField(primary_key=True)
 
     class Meta:
         ordering = ["id"]
@@ -14,14 +14,13 @@ class Author(models.Model):
 
 class Genre(models.Model):
     name = models.CharField(max_length=20)
-    id = models.IntegerField(primary_key=True)
+    id = models.AutoField(primary_key=True)
 
     class Meta:
         ordering = ["id"]
 
 
 class Book(models.Model):
-    id = models.IntegerField(primary_key=True)
     name = models.CharField(max_length=100)
     price = models.IntegerField()
     description = models.TextField(max_length=200)
