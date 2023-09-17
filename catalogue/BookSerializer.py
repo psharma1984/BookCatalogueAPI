@@ -27,6 +27,11 @@ class GenreSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         return Genre.objects.create(**validated_data)
 
+    def update(self, instance, validated_data):
+        instance.name = validated_data.get("name", instance.name)
+        instance.save()
+        return instance
+
     class Meta:
         model = Genre
         fields = ["name", "id"]
@@ -35,6 +40,12 @@ class GenreSerializer(serializers.ModelSerializer):
 class AuthorSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         return Author.objects.create(**validated_data)
+
+    def update(self, instance, validated_data):
+        instance.name = validated_data.get("name", instance.name)
+        instance.age = validated_data.get("age", instance.age)
+        instance.save()
+        return instance
 
     class Meta:
         model = Author
