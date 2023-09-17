@@ -2,9 +2,21 @@ from rest_framework import serializers
 from catalogue.models import Book, Genre, Author
 
 
+class RelatedAuthorSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Author
+        fields = ["name", "url"]
+
+
+class RelatedGenreSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Genre
+        fields = ["name", "url"]
+
+
 class BookSerializer(serializers.ModelSerializer):
-    author = serializers.StringRelatedField()
-    genres = serializers.StringRelatedField(many=True)
+    author = RelatedAuthorSerializer()
+    genres = RelatedAuthorSerializer(many=True)
 
     class Meta:
         model = Book
