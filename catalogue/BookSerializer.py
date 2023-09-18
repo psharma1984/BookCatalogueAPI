@@ -5,7 +5,7 @@ from catalogue.models import Book, Genre, Author
 class RelatedAuthorSerializer(serializers.ModelSerializer):
     class Meta:
         model = Author
-        fields = ["name", "url"]
+        fields = ["name", "url", "age"]
 
 
 class RelatedGenreSerializer(serializers.ModelSerializer):
@@ -16,17 +16,25 @@ class RelatedGenreSerializer(serializers.ModelSerializer):
 
 class BookSerializer(serializers.ModelSerializer):
     author = RelatedAuthorSerializer()
-    genres = RelatedAuthorSerializer(many=True)
+    genres = RelatedGenreSerializer(many=True)
 
     class Meta:
         model = Book
         fields = ["name", "price", "description", "author", "genres", "id"]
 
     def create(self, validated_data):
-        genres_data = validated_data.pop("genres", None)
-        book = Book.objects.create(**validated_data)
+        genres_data = validated_data.pop("genres", [])
+        author_data = validated_data.pop("author", None)
+
+        if author_data:
+            author, created = Author.objects.get_or_create(**author_data)
+        else:
+            author = None
+        book = Book.objects.create(author=author, **validated_data)
+
         for genre_data in genres_data:
-            book.genres.add(genre_data)
+            genre, created = Genre.objects.get_or_create(**genre_data)
+            book.genres.add(genre)
             book.save()
         return book
 

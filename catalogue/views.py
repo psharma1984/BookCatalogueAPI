@@ -13,7 +13,7 @@ class BookList(APIView):
         return Response(serializer.data)
 
     def post(self, request):
-        serializer = BookSerializer(data=request.data)
+        serializer = BookSerializer(data=request.data, context={"request": request})
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
@@ -29,7 +29,7 @@ class BookView(APIView):
 
     def put(self, request, **kwargs):
         book = Book.objects.get(id=kwargs["pk"])
-        serializer = BookSerializer(book, data=request.data)
+        serializer = BookSerializer(book, data=request.data, context={"request": request})
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_200_OK)
